@@ -21,6 +21,12 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Create stub Claude CLI
+        run: |
+          echo '#!/bin/sh' > /usr/local/bin/claude
+          echo 'echo "{\"result\":\"stub\",\"model\":\"stub\",\"input_tokens\":0,\"output_tokens\":0}"' >> /usr/local/bin/claude
+          chmod +x /usr/local/bin/claude
+
       - name: Start server
         run: |
           uvicorn app.main:app --host 127.0.0.1 --port 8020 &
@@ -32,7 +38,7 @@ jobs:
           API_SECRET_TOKEN: test-token-for-ci
           CLAUDE_CLI_PATH: claude
           DEFAULT_MODEL: sonnet
-          ALLOWED_PATHS: .
+          ALLOWED_PATHS: ${{ github.workspace }}
 
       - name: Run non-AI tests
         run: python3 test_server.py --skip-ai --token test-token-for-ci
