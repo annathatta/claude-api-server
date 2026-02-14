@@ -4,13 +4,13 @@ After=network.target
 
 [Service]
 Type=simple
-User=gslee
-Group=users
-WorkingDirectory=/home/gslee/claude-api-server
-Environment="PATH=/home/gslee/claude-api-server/venv/bin:/home/gslee/.local/bin:/usr/local/bin:/usr/bin:/bin"
+User=YOURUSER
+Group=YOURUSER
+WorkingDirectory=/home/YOURUSER/claude-api-server
+Environment="PATH=/home/YOURUSER/claude-api-server/venv/bin:/home/YOURUSER/.local/bin:/usr/local/bin:/usr/bin:/bin"
 # Prevent nested sessions: do not inherit Claude Code env vars
 UnsetEnvironment=CLAUDECODE CLAUDE_CODE_ENTRYPOINT
-ExecStart=/home/gslee/claude-api-server/venv/bin/python3 -m uvicorn app.main:app --host 127.0.0.1 --port 8020
+ExecStart=/home/YOURUSER/claude-api-server/venv/bin/python3 -m uvicorn app.main:app --host 127.0.0.1 --port 8020
 Restart=always
 RestartSec=5
 

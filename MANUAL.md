@@ -595,7 +595,7 @@ curl -X POST http://localhost:8020/api/analyze \
   -H "Content-Type: application/json" \
   -d '{
     "prompt": "Summarize what this project depends on and why each dependency is needed.",
-    "context_files": ["/home/gslee/claude-api-server/requirements.txt"],
+    "context_files": ["/home/youruser/claude-api-server/requirements.txt"],
     "model": "haiku"
   }'
 ```
@@ -620,14 +620,14 @@ AI processing (e.g., checking a config file, previewing a log).
 curl -X POST http://localhost:8020/api/tools/file-read \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"path": "/home/gslee/claude-api-server/requirements.txt"}'
+  -d '{"path": "/home/youruser/claude-api-server/requirements.txt"}'
 ```
 
 **Response:**
 
 ```json
 {
-  "path": "/home/gslee/claude-api-server/requirements.txt",
+  "path": "/home/youruser/claude-api-server/requirements.txt",
   "content": "fastapi>=0.115.0\nuvicorn[standard]>=0.34.0\npydantic-settings>=2.0.0\nfastapi-mcp>=0.3.0\npython-dotenv>=1.0.0\n",
   "size": 107
 }
@@ -921,17 +921,17 @@ This server has multiple layers of protection to prevent misuse.
 The `/api/analyze` and `/api/tools/file-read` endpoints can only access files within
 the paths listed in the `ALLOWED_PATHS` setting in your `.env` file.
 
-**Default:** `/home/gslee` (only files under this directory are accessible)
+**Default:** `/home/youruser` (only files under this directory are accessible)
 
 Trying to read a file outside the whitelist returns a **403 Forbidden** error:
 
 ```bash
-# This works (path is under /home/gslee)
+# This works (path is under /home/youruser)
 curl -X POST http://localhost:8020/api/tools/file-read \
   -H "Authorization: Bearer YOUR_TOKEN" \
-  -d '{"path": "/home/gslee/claude-api-server/requirements.txt"}'
+  -d '{"path": "/home/youruser/claude-api-server/requirements.txt"}'
 
-# This is BLOCKED (path is outside /home/gslee)
+# This is BLOCKED (path is outside /home/youruser)
 curl -X POST http://localhost:8020/api/tools/file-read \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -d '{"path": "/etc/shadow"}'
@@ -1086,7 +1086,7 @@ print(data["result"])
 
 # Read a file from the server
 response = requests.post(f"{URL}/api/tools/file-read", headers=HEADERS, json={
-    "path": "/home/gslee/claude-api-server/requirements.txt",
+    "path": "/home/youruser/claude-api-server/requirements.txt",
 })
 print(response.json()["content"])
 
@@ -1148,7 +1148,7 @@ curl -X POST http://localhost:8020/api/analyze \
   -H "Content-Type: application/json" \
   -d '{
     "prompt": "Summarize this file and list any potential issues.",
-    "context_files": ["/home/gslee/some-project/config.py"],
+    "context_files": ["/home/youruser/some-project/config.py"],
     "model": "sonnet"
   }'
 ```
@@ -1193,7 +1193,7 @@ print("Turn 2:", response.choices[0].message.content)
 ps aux | grep uvicorn
 
 # If not running, start it
-cd /home/gslee/claude-api-server
+cd /home/youruser/claude-api-server
 source venv/bin/activate
 uvicorn app.main:app --host 127.0.0.1 --port 8020
 ```
@@ -1303,4 +1303,4 @@ Quick reference for all technical terms used in this manual.
 
 ---
 
-*Last updated: 2026-02-10*
+*Last updated: 2026-02-14*
